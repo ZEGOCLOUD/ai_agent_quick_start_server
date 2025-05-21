@@ -36,6 +36,57 @@ export interface ZegoSendMsgOptions {
     NoUnread?: boolean;
 }
 
+// 定义机器人注册响应接口
+export interface ZegoRobotRegisterResponse {
+    Code: number;
+    Message: string;
+    RequestId: string;
+    ErrorList?: Array<{
+        UserId: string;
+        SubCode: number;
+        SubMessage: string;
+    }>;
+}
+
+// 定义消息列表查询响应接口
+export interface ZegoMessageListResponse {
+    Code: number;
+    Message: string;
+    RequestId: string;
+    Next: number;
+    List?: Array<{
+        Sender: string;
+        MsgType: number;
+        SubMsgType?: number;
+        MsgBody: string;
+        MsgId: number | string;
+        MsgSeq: number;
+        Payload?: string;
+        MsgTime: number;
+        IsEmpty?: number;
+    }>;
+}
+
+// 定义发送消息响应接口
+export interface ZegoSendMessageResponse {
+    Code: number;
+    Message: string;
+    RequestId: string;
+    ErrorList?: Array<{
+        UserId: string;
+        SubCode: number;
+    }>;
+    SuccList?: Array<{
+        UserId: string;
+        MsgId: string;
+        MsgSeq: number;
+    }>;
+    AuditInfos?: Array<{
+        Index: number;
+        Reason: string;
+    }>;
+}
+
 export class ZegoZIM {
     private static instance: ZegoZIM;
 
@@ -54,7 +105,7 @@ export class ZegoZIM {
      * Register a ZIM robot for storing conversation history
      * @returns The result of the registration
      */
-    async registerZIMRobot() {
+    async registerZIMRobot(): Promise<ZegoRobotRegisterResponse> {
         const action = 'RobotRegister';
         const baseURL = 'https://zim-api.zego.im';
         const body = {
@@ -65,7 +116,7 @@ export class ZegoZIM {
             ]
         }
         const agent = ZegoAIAgent.getInstance();
-        const result = await agent.sendRequest(action, body, baseURL);
+        const result = await agent.sendRequest<ZegoRobotRegisterResponse>(action, body, baseURL);
         console.log("register ZIM robot result", result);
         return result;
     }
@@ -79,7 +130,7 @@ export class ZegoZIM {
      * @param withEmptyMsg Whether to include recalled or deleted messages (optional, 0: exclude, 1: include)
      * @returns The result of the query
      */
-    async queryMessageList(fromUserId: string, toUserId: string, limit: number = 10, next: number = 0, withEmptyMsg: number = 0) {
+    async queryMessageList(fromUserId: string, toUserId: string, limit: number = 10, next: number = 0, withEmptyMsg: number = 0): Promise<ZegoMessageListResponse> {
         const action = 'QueryPeerMsg';
         const baseURL = 'https://zim-api.zego.im';
         const body = {
@@ -90,7 +141,7 @@ export class ZegoZIM {
             WithEmptyMsg: withEmptyMsg
         }
         const agent = ZegoAIAgent.getInstance();
-        const result = await agent.sendRequest(action, body, baseURL);
+        const result = await agent.sendRequest<ZegoMessageListResponse>(action, body, baseURL);
         console.log("query message list result", result);
         return result;
     }
@@ -118,7 +169,7 @@ export class ZegoZIM {
         searchedContent?: string,
         senderUnaware?: number,
         sendMsgOptions?: ZegoSendMsgOptions
-    ) {
+    ): Promise<ZegoSendMessageResponse> {
         const action = 'SendPeerMessage';
         const baseURL = 'https://zim-api.zego.im';
 
@@ -149,7 +200,7 @@ export class ZegoZIM {
         }
 
         const agent = ZegoAIAgent.getInstance();
-        const result = await agent.sendRequest(action, body, baseURL);
+        const result = await agent.sendRequest<ZegoSendMessageResponse>(action, body, baseURL);
         console.log("send peer message result", result);
         return result;
     }

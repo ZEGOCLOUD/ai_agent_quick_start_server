@@ -38,11 +38,16 @@ export async function POST(req: NextRequest) {
         if (registerRobotResult.Code === 0) {
             console.log("register ZIM robot success")
         } else {
-            if (registerRobotResult.ErrorList[0].SubCode === 660700002) {
-                console.log("ZIM robot already exists")
+            if (registerRobotResult.ErrorList && registerRobotResult.ErrorList.length > 0) {
+                if (registerRobotResult.ErrorList[0].SubCode === 660700002) {
+                    console.log("ZIM robot already exists")
+                } else {
+                    console.log("register ZIM robot failed!")
+                    throw new Error(`register ZIM robot failed! ${registerRobotResult.ErrorList[0].SubMessage}`);
+                }
             } else {
-                console.log("register ZIM robot failed!")
-                throw new Error(`register ZIM robot failed! ${registerRobotResult.ErrorList[0].SubMessage}`);
+                console.log("register ZIM robot failed with unknown error")
+                throw new Error(`register ZIM robot failed! Code: ${registerRobotResult.Code}, Message: ${registerRobotResult.Message}`);
             }
         }
 

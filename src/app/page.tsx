@@ -92,7 +92,12 @@ export default function Home() {
                   <span>请注意检查参数是否有效！即使参数无效也可能注册成功！</span>
                 </div>
                 <button className="btn btn-sm" onClick={async () => {
-                  console.log('Button clicked', document.querySelector('#register-agent-textarea').value); // 检查按钮是否被点击
+                  const textarea = document.querySelector('#register-agent-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
+                  console.log('Button clicked', textarea.value); // 检查按钮是否被点击
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -101,13 +106,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'RegisterAgent',
-                        data: JSON.parse(document.querySelector('#register-agent-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -151,7 +156,12 @@ export default function Home() {
                   <span>请注意检查参数是否有效！即使参数无效也可能修改成功！</span>
                 </div>
                 <button className="btn btn-sm" onClick={async () => {
-                  console.log('Button clicked', document.querySelector('#update-agent-textarea').value); // 检查按钮是否被点击
+                  const textarea = document.querySelector('#update-agent-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
+                  console.log('Button clicked', textarea.value); // 检查按钮是否被点击
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -160,13 +170,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'UpdateAgent',
-                        data: JSON.parse(document.querySelector('#update-agent-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -207,7 +217,12 @@ export default function Home() {
               <div className="collapse-title font-semibold">注销智能体</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
-                  console.log('Button clicked', document.querySelector('#unregister-agent-textarea').value); // 检查按钮是否被点击
+                  const textarea = document.querySelector('#unregister-agent-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
+                  console.log('Button clicked', textarea.value); // 检查按钮是否被点击
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -216,13 +231,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'UnregisterAgent',
-                        data: JSON.parse(document.querySelector('#unregister-agent-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -249,6 +264,11 @@ export default function Home() {
                   <span>请注意检查参数是否有效！即使参数无效也可能创建成功！</span>
                 </div>
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#create-agent-instance-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -257,13 +277,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'CreateAgentInstance',
-                        data: JSON.parse(document.querySelector('#create-agent-instance-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -292,6 +312,11 @@ export default function Home() {
                   <span>请注意检查参数是否有效！即使参数无效也可能修改成功！</span>
                 </div>
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#update-agent-instance-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -300,13 +325,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'UpdateAgentInstance',
-                        data: JSON.parse(document.querySelector('#update-agent-instance-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -330,6 +355,11 @@ export default function Home() {
               <div className="collapse-title font-semibold">删除智能体实例</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#delete-agent-instance-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -338,13 +368,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'DeleteAgentInstance',
-                        data: JSON.parse(document.querySelector('#delete-agent-instance-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -368,6 +398,11 @@ export default function Home() {
               <div className="collapse-title font-semibold">主动调用LLM</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#send-instance-llm-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -376,13 +411,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'SendAgentInstanceLLM',
-                        data: JSON.parse(document.querySelector('#send-instance-llm-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -401,6 +436,11 @@ export default function Home() {
               <div className="collapse-title font-semibold">主动调用TTS</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#sned-instance-tts-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -409,13 +449,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'SendAgentInstanceTTS',
-                        data: JSON.parse(document.querySelector('#sned-instance-tts-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
@@ -434,6 +474,11 @@ export default function Home() {
               <div className="collapse-title font-semibold">查询智能体实例状态</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#query-instance-textarea') as HTMLTextAreaElement;
+                  if (!textarea) {
+                    alert('找不到文本区域元素');
+                    return;
+                  }
                   try {
                     const response = await fetch('/api/passthrough-request', {
                       method: 'POST',
@@ -442,13 +487,13 @@ export default function Home() {
                       },
                       body: JSON.stringify({
                         action: 'QueryAgentInstanceStatus',
-                        data: JSON.parse(document.querySelector('#query-instance-textarea').value)
+                        data: JSON.parse(textarea.value)
                       }),
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
                   } catch (error) {
-                    alert('请求失败：' + error.message);
+                    alert('请求失败：' + (error as Error).message);
                   }
                 }}>点我发起请求</button>
                 <fieldset className="fieldset">
