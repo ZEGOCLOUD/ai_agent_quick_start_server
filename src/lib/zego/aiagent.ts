@@ -280,9 +280,10 @@ export class ZegoAIAgent {
             UserId: userId,
             RTC: rtcInfo,
             MessageHistory: messageHistory || {
-                SyncMode: 1, // Change to 0 to use history messages from ZIM
-                Messages: [],
-                WindowSize: 10
+                SyncMode: 0,
+                ZIM: {
+                    RobotId: "@RBT#AIAgentExample1" // 跟registerZIMRobot时的参数一致
+                }
             },
             LLM: llmConfig,
             TTS: ttsConfig,
@@ -317,4 +318,5 @@ export class ZegoAIAgent {
         console.log("list agents result", result);
         return result;
     }
+
 }

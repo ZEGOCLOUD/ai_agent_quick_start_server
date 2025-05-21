@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { ZegoAIAgent } from '@/lib/zego/aiagent';
+import { ZegoZIM } from '@/lib/zego/zim';
 import { AgentStore } from '@/lib/store';
 
 // 定义请求体类型
@@ -30,6 +31,21 @@ export async function POST(req: NextRequest) {
             console.log("agent already exists");
         }
 
+        // 注册ZIM机器人，用于存储对话历史记录
+        // 在实际开发时，并不用每次创建实例都创建ZIM机器人，可以理解为一个机器人就对应一个跟AI的文本会话，只是在语音通话的时候传递机器人ID将文本历史传递给语音作为上下文
+        const zim = ZegoZIM.getInstance();
+        const registerRobotResult = await zim.registerZIMRobot()
+        if (registerRobotResult.Code === 0) {
+            console.log("register ZIM robot success")
+        } else {
+            if (registerRobotResult.ErrorList[0].SubCode === 660700002) {
+                console.log("ZIM robot already exists")
+            } else {
+                console.log("register ZIM robot failed!")
+                throw new Error(`register ZIM robot failed! ${registerRobotResult.ErrorList[0].SubMessage}`);
+            }
+        }
+
 
         // 保存 agent_instance_id
         const store = AgentStore.getInstance();
@@ -44,9 +60,9 @@ export async function POST(req: NextRequest) {
             UserStreamId: user_stream_id
         });
         const agent_instance_id = result.Data.AgentInstanceId;
-        console.log("create agent instance", agent_instance_id);
 
         store.setAgentInstanceId(agent_instance_id);
+        console.log("create agent instance", agent_instance_id, store.getAgentInstanceId());
 
         return Response.json({
             code: 0,

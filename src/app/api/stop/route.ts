@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
     try {
         const store = AgentStore.getInstance();
         const agent_instance_id = store.getAgentInstanceId();
+        console.log("try to delete instance: ", agent_instance_id)
 
         if (!agent_instance_id) {
             return Response.json({
