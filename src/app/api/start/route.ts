@@ -4,12 +4,14 @@ import { ZegoZIM } from '@/lib/zego/zim';
 import { AgentStore } from '@/lib/store';
 
 // 定义请求体类型
+// Define request body type
 interface RequestBody {
     agent_id: string;
     agent_name: string;
 }
 
 // 这里只是作为最简单的示例。所以以下参数都是固定的。请根据您实际的场景进行动态设置。
+// This is just the simplest example. So the following parameters are all fixed. Please set them dynamically according to your actual scenario.
 const agent_id = "ai_agent_example_1";
 const agent_name = "AI Agent Example 1";
 const user_id = "user_id_1";
@@ -32,7 +34,9 @@ export async function POST(req: NextRequest) {
         }
 
         // 注册ZIM机器人，用于存储对话历史记录
+        // Register ZIM robot for storing conversation history
         // 在实际开发时，并不用每次创建实例都创建ZIM机器人，可以理解为一个机器人就对应一个跟AI的文本会话，只是在语音通话的时候传递机器人ID将文本历史传递给语音作为上下文
+        // In actual development, you don't need to create a ZIM robot every time you create an instance. You can understand that one robot corresponds to one text conversation with AI, and the robot ID is passed to the voice call to pass the text history as context
         const zim = ZegoZIM.getInstance();
         const registerRobotResult = await zim.registerZIMRobot()
         if (registerRobotResult.Code === 0) {
@@ -53,6 +57,7 @@ export async function POST(req: NextRequest) {
 
 
         // 保存 agent_instance_id
+        // Save agent_instance_id
         const store = AgentStore.getInstance();
         if (store.getAgentInstanceId()) {
             await assistant.deleteAgentInstance(store.getAgentInstanceId());
