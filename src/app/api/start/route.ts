@@ -13,7 +13,7 @@ interface RequestBody {
 // 这里只是作为最简单的示例。所以以下参数都是固定的。请根据您实际的场景进行动态设置。
 // This is just the simplest example. So the following parameters are all fixed. Please set them dynamically according to your actual scenario.
 const agent_id = "ai_agent_example_1";
-const agent_name = "AI Agent Example 1";
+const agent_name = "李浩然";
 const user_id = "user_id_1";
 const room_id = "room_id_1";
 const agent_stream_id = "agent_stream_id_1";
