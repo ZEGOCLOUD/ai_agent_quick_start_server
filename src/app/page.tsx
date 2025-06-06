@@ -261,7 +261,7 @@ export default function Home() {
 
 
 
-          <input type="radio" name="my_tabs_2" className="tab" aria-label="智能体实例管理" />
+          <input type="radio" name="my_tabs_2" className="tab" aria-label="智能体实例管理（Agent Instance Management）" />
           <div className="tab-content" style={{ minHeight: '800px' }}>
             <div className="collapse collapse-arrow bg-base-100 border border-base-300">
               <input type="radio" name="my-accordion-2" />
@@ -404,7 +404,7 @@ export default function Home() {
 
 
 
-          <input type="radio" name="my_tabs_2" className="tab" aria-label="智能体实例控制" />
+          <input type="radio" name="my_tabs_2" className="tab" aria-label="智能体实例控制（Agent Instance Control）" />
           <div className="tab-content" style={{ minHeight: '800px' }}>
             <div className="collapse collapse-arrow bg-base-100 border border-base-300">
               <input type="radio" name="my-accordion-2" />
