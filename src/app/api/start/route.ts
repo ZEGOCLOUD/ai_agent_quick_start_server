@@ -59,8 +59,9 @@ export async function POST(req: NextRequest) {
         // 保存 agent_instance_id
         // Save agent_instance_id
         const store = AgentStore.getInstance();
-        if (store.getAgentInstanceId()) {
-            await assistant.deleteAgentInstance(store.getAgentInstanceId());
+        const existingInstanceId = store.getAgentInstanceId();
+        if (existingInstanceId) {
+            await assistant.deleteAgentInstance(existingInstanceId);
             store.setAgentInstanceId("");
         }
         const result = await assistant.createAgentInstance(agent_id, user_id, {
