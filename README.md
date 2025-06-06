@@ -50,16 +50,22 @@ npm run dev
 1. 在 Netlify 平台跳转到 `你的Site实例 -> Site configuration -> Environment variables`
 2. 点击右侧的 `Add a variable` 并选择 `Import from a .env file`，然后将以下内容拷贝到输入框（Contents of .env file:）中，然后点击 `Import variables`。
 ```bash
-# 请替换成您实际的内容
+# 您从 ZEGO 控制台（https://console.zego.im/）获取的AppID和ServerSecret
 NEXT_PUBLIC_ZEGO_APP_ID=
 ZEGO_SERVER_SECRET=
 
-LLM_API_KEY=
-LLM_BASE_URL=https://****************/chat/completions
-LLM_MODEL=deepseek-v3-250324
+# 您从LLM服务商获取的LLM API Key、Base URL和模型
+# 在接入测试期间（联系 ZEGO 技术支持开通 AI Agent 服务 2 周内），有部分模型可直接使用，请参考：https://doc-zh.zego.im/aiagent-server/api-reference/common-parameter-description#llm
+# 接入测试期间，以下配置可直接使用，无需修改
+LLM_BASE_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
+LLM_API_KEY=zego_test
+LLM_MODEL=doubao-1-5-lite-32k-250115
 
-TTS_BYTEDANCE_APP_ID=4******9
-TTS_BYTEDANCE_TOKEN=N8I************************stqp
+# 这里以字节跳动的TTS为例，您从字节跳动获取的TTS API Key、Token、Cluster和Voice Type
+# 在接入测试期间（ 联系 ZEGO 技术支持开通 AI Agent 服务 2 周内）appid和token都可以直接填 zego_test 就可使用 tts（文本转语音） 服务。
+# 接入测试期间，以下配置可直接使用，无需修改
+TTS_BYTEDANCE_APP_ID=zego_test
+TTS_BYTEDANCE_TOKEN=zego_test
 TTS_BYTEDANCE_CLUSTER=volcano_tts
 TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
 ```
