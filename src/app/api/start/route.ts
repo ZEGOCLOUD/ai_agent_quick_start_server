@@ -31,7 +31,10 @@ export async function POST(req: NextRequest) {
             code: 0,
             message: 'start agent success',
             agent_id: agent_id,
-            agent_instance_id: agent_instance_id
+            agent_instance_id: agent_instance_id,
+            agent_stream_id: agent_stream_id,
+            agent_user_id: agent_user_id,
+            agent_name: "李浩然"
         }, { status: 200 });
     } catch (error) {
         console.error('register agent failed:', error);
