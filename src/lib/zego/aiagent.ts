@@ -282,7 +282,7 @@ export class ZegoAIAgent {
             MessageHistory: messageHistory || {
                 SyncMode: 0,
                 ZIM: {
-                    RobotId: "@RBT#AIAgentExample1" // 跟registerZIMRobot时的参数一致
+                    RobotId: "@RBT#"+agentId // 跟registerZIMRobot时的参数一致
                 }
             },
             LLM: llmConfig,

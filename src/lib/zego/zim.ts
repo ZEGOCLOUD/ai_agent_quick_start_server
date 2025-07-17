@@ -110,8 +110,8 @@ export class ZegoZIM {
      * @param robotUserId 机器人用户ID，如果不提供则使用默认值
      * @returns 返回机器人ID
      */
-    async ensureRobotExists(robotUserId?: string): Promise<{ robotId: string; isNewRegistration: boolean }> {
-        const userId = robotUserId || "@RBT#AIAgentExample1";
+    async ensureRobotExists(robotUserId: string): Promise<{ robotId: string; isNewRegistration: boolean }> {
+        const userId = robotUserId;
         
         try {
             // 尝试注册机器人

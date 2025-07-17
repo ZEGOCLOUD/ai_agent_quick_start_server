@@ -33,8 +33,9 @@ npm run dev
 
 在运行成功后，即可调用以下接口：
 1. 获取 Token：`http://localhost:3000/api/agent/zego-token`
-2. 开始与智能体通话： `http://localhost:3000/api/start`
-3. 结束与智能体通话： `http://localhost:3000/api/stop`
+2. 查询智能体信息： `http://localhost:3000/api/getAgentInfo`
+3. 开始与智能体通话： `http://localhost:3000/api/start`
+4. 结束与智能体通话： `http://localhost:3000/api/stop`
 
 注意：如果是在 PC/Mac 上运行服务端然后在 Android 或者 iOS 等移动设备上调试，请把 `localhost` 替换成 PC/Mac 的实际局域网地址进行访问。
 
@@ -92,8 +93,9 @@ TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
 
 使用该域名可访问API接口：
 1. 获取 Token：`https://****.vercel.app/api/agent/zego-token`
-2. 开始与智能体通话： `https://****.vercel.app/api/start`
-3. 结束与智能体通话： `https://****.vercel.app/api/stop`
+2. 查询智能体信息： `https://****.vercel.app/api/getAgentInfo`
+3. 开始与智能体通话： `https://****.vercel.app/api/start`
+4. 结束与智能体通话： `https://****.vercel.app/api/stop`
 
 ## 使用服务
 
