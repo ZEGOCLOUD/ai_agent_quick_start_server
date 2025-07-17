@@ -41,6 +41,9 @@ export interface ZegoRobotRegisterResponse {
     Code: number;
     Message: string;
     RequestId: string;
+    Data?: {
+        RobotId: string;
+    };
     ErrorList?: Array<{
         UserId: string;
         SubCode: number;
@@ -102,16 +105,60 @@ export class ZegoZIM {
     }
 
     /**
+     * 查询或确保机器人存在，如果不存在则注册
+     * Query or ensure robot exists, register if not exists
+     * @param robotUserId 机器人用户ID，如果不提供则使用默认值
+     * @returns 返回机器人ID
+     */
+    async ensureRobotExists(robotUserId?: string): Promise<{ robotId: string; isNewRegistration: boolean }> {
+        const userId = robotUserId || "@RBT#AIAgentExample1";
+        
+        try {
+            // 尝试注册机器人
+            const registerResult = await this.registerZIMRobot(userId);
+            
+            if (registerResult.Code === 0) {
+                // 注册成功，是新注册的机器人
+                console.log("register ZIM robot success");
+                return {
+                    robotId: registerResult.Data?.RobotId || userId,
+                    isNewRegistration: true
+                };
+            } else if (registerResult.ErrorList && registerResult.ErrorList.length > 0) {
+                if (registerResult.ErrorList[0].SubCode === 660700002) {
+                    // 机器人已存在
+                    console.log("ZIM robot already exists");
+                    return {
+                        robotId: userId,
+                        isNewRegistration: false
+                    };
+                } else {
+                    // 其他错误
+                    throw new Error(`register ZIM robot failed! ${registerResult.ErrorList[0].SubMessage}`);
+                }
+            } else {
+                // 未知错误
+                throw new Error(`register ZIM robot failed! Code: ${registerResult.Code}, Message: ${registerResult.Message}`);
+            }
+        } catch (error) {
+            console.error('Error ensuring robot exists:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Register a ZIM robot for storing conversation history
+     * @param robotUserId 机器人用户ID，如果不提供则使用默认值
      * @returns The result of the registration
      */
-    async registerZIMRobot(): Promise<ZegoRobotRegisterResponse> {
+    async registerZIMRobot(robotUserId?: string): Promise<ZegoRobotRegisterResponse> {
+        const userId = robotUserId || "@RBT#AIAgentExample1";
         const action = 'RobotRegister';
         const baseURL = 'https://zim-api.zego.im';
         const body = {
             UserInfo: [
                 {
-                    UserId: "@RBT#AIAgentExample1" // Must match the RobotId used when creating AIAgent instance
+                    UserId: userId // Must match the RobotId used when creating AIAgent instance
                 }
             ]
         }
