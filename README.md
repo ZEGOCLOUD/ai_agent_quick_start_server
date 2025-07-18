@@ -56,11 +56,10 @@ NEXT_PUBLIC_ZEGO_APP_ID=
 ZEGO_SERVER_SECRET=
 
 # 您从LLM服务商获取的LLM API Key、Base URL和模型
-# 在接入测试期间（联系 ZEGO 技术支持开通 AI Agent 服务 2 周内），有部分模型可直接使用，请参考：https://doc-zh.zego.im/aiagent-server/api-reference/common-parameter-description#llm
-# 接入测试期间，以下配置可直接使用，无需修改
+# # LLM API Key, Base URL, and model obtained from LLM service provider
 LLM_BASE_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
-LLM_API_KEY=zego_test
-LLM_MODEL=doubao-1-5-lite-32k-250115
+LLM_API_KEY=your_llm_api_key
+LLM_MODEL=your_llm_model
 
 # 这里以字节跳动的TTS为例，您从字节跳动获取的TTS API Key、Token、Cluster和Voice Type
 # 在接入测试期间（ 联系 ZEGO 技术支持开通 AI Agent 服务 2 周内）appid和token都可以直接填 zego_test 就可使用 tts（文本转语音） 服务。
