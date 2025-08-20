@@ -15,56 +15,60 @@
 
 
 ## 部署和运行
-
-### 本地运行
-
-你可以在本地安装依赖环境后，在本地启动服务端，然后客户端通过连接到同一个局域网访问相应接口。
-
-1. 请安装[Node.js 18.18](https://nodejs.org/)或以上版本。
-2. 将本仓库代码下载至本地
-3. 将 `.env.example` 文件拷贝为 `.env` 并按说明填写好所有环境变量的值（如ZEGO APPID、LLM、TTS）。
-4. 进入项目根目录运行以下命令以启动服务。
-```bash
-npm install
-npm run dev
-```
-
-运行完成后，可以打开 [http://localhost:3000](http://localhost:3000) 查看运行结果。
-
-在运行成功后，即可调用以下接口：
-1. 获取 Token：`http://localhost:3000/api/zego-token`
-2. 开始与智能体通话： `http://localhost:3000/api/start`
-3. 开始与数字人智能体视频通话：`http://localhost:3000/api/start-digital-human`
-3. 结束与智能体通话： `http://localhost:3000/api/stop`
-
-注意：如果是在 PC/Mac 上运行服务端然后在 Android 或者 iOS 等移动设备上调试，请把 `localhost` 替换成 PC/Mac 的实际局域网地址进行访问。
-
 ### 部署到 Netlify
 
 请注意⚠️：中国大陆建议使用该方式
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/ZEGOCLOUD/ai_agent_quick_start_server)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/ZEGOCLOUD/ai_agent_quick_start_server&branch=rag)
 
 点击上方按钮可以一键将此项目部署到 Netlify 平台。
 部署过程中，您需要导入所有必要的环境变量。具体步骤如下：
 
 1. 在 Netlify 平台跳转到 `你的Site实例 -> Site configuration -> Environment variables`
 2. 点击右侧的 `Add a variable` 并选择 `Import from a .env file`，然后将以下内容拷贝到输入框（Contents of .env file:）中，然后点击 `Import variables`。
+注意⚠️：请将LLM_BASE_URL的yourdomain替换成刚部署成功后站点的域名。
+
 ```bash
 # 您从 ZEGO 控制台（https://console.zego.im/）获取的AppID和ServerSecret
+# AppID and ServerSecret obtained by you from ZEGOCLOUD console（https://console.zegocloud.com/）
 NEXT_PUBLIC_ZEGO_APP_ID=
 ZEGO_SERVER_SECRET=
 
-# 您从LLM服务商获取的LLM API Key、Base URL和模型
-# 在接入测试期间（联系 ZEGO 技术支持开通 AI Agent 服务 2 周内），有部分模型可直接使用，请参考：https://doc-zh.zego.im/aiagent-server/api-reference/common-parameter-description#llm
-# 接入测试期间，以下配置可直接使用，无需修改
-LLM_BASE_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
-LLM_API_KEY=zego_test
+# 您自己提供符合 OpenAPI 规范 LLM 接口地址。AIAgent 将会直接向这个接口发起请求。注意，必须是可以通过外网访问的 URL 而不能是局域网地址或者 localhost。
+LLM_BASE_URL=https://***.netlify.app/api/chat/completions
+# 真实 LLM 服务提供商提供的 URL、Key和Model。在您自己定义的 LLM 接口内部调用。
+LLM_BASE_URL_REAL=https://ark.cn-beijing.volces.com/api/v3/
+LLM_API_KEY=**********
 LLM_MODEL=doubao-1-5-lite-32k-250115
+
+# 使用哪个知识库（ragflow或者bailian）。按 KB_TYPE 配置以下对应的知识库环境变量。不使用不用配置。
+KB_TYPE=bailian
+# 使用查询返回的片段数量
+KB_CHUNK_COUNT=8
+
+# 您自己部署的 RAGFlow 服务。
+# RAGFlow 文档地址：https://ragflow.io/docs/dev/
+RAGFLOW_KB_DATASET_ID=947499c*************
+RAGFLOW_API_ENDPOINT=https://demo.ragflow.io/
+RAGFLOW_API_KEY=ragflow-**********
+
+# 百炼知识库使用指南：https://bailian.console.aliyun.com/?spm=a2c4g.11186623.0.0.7ba312d5YW74o6&tab=doc#/doc/?type=app&url=2807740
+# 百炼知识库API指南地址：https://bailian.console.aliyun.com/?spm=5176.29619931.J_AHgvE-XDhTWrtotIBlDQQ.13.74cd521cb6A3jn&tab=doc#/doc/?type=app&url=2852772
+# 如何创建 ACCESS_KEY 及 ACCESS_KEY_SECRET：https://help.aliyun.com/zh/ram/user-guide/create-an-accesskey-pair?spm=a2c4g.11186623.0.i2
+ALIBABA_CLOUD_ACCESS_KEY_ID='您的阿里云访问密钥ID'
+ALIBABA_CLOUD_ACCESS_KEY_SECRET='您的阿里云访问密钥密码'
+ALIBABA_CLOUD__SERVICE_ENDPOINT=bailian.cn-beijing.aliyuncs.com
+# 如何获取阿里云百炼业务空间ID：https://bailian.console.aliyun.com/?spm=5176.29619931.J_AHgvE-XDhTWrtotIBlDQQ.13.74cd521cb6A3jn&tab=doc#/doc/?type=model&url=2587495
+ALIBABA_CLOUD_BAILIAN_WORKSPACE_ID='您的阿里云百炼业务空间ID'
+# 如何获取阿里云百炼知识库ID：阿里云百炼控制台->应用->知识库->鼠标放置在知识库右侧的ID图标上->复制弹出的ID
+ALIBABA_CLOUD_BAILIAN_KB_INDEX_ID='您的知识库ID'
 
 # 这里以字节跳动的TTS为例，您从字节跳动获取的TTS API Key、Token、Cluster和Voice Type
 # 在接入测试期间（ 联系 ZEGO 技术支持开通 AI Agent 服务 2 周内）appid和token都可以直接填 zego_test 就可使用 tts（文本转语音） 服务。
 # 接入测试期间，以下配置可直接使用，无需修改
+# Taking ByteDance's TTS as an example, during the access test period (within 2 weeks after contacting ZEGOCLOUD technical support to activate the AI Agent service)
+# both the appid and token can be directly filled with "zego_test" to use the TTS (Text-to-Speech) service.
+# The following configurations can be used directly without modification during the access test period:
 TTS_BYTEDANCE_APP_ID=zego_test
 TTS_BYTEDANCE_TOKEN=zego_test
 TTS_BYTEDANCE_CLUSTER=volcano_tts
@@ -86,7 +90,7 @@ TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
 
 请注意⚠️：中国大陆访问Vercel可能会有问题。如果无法访问请科学上网。在部署好后的服务绑定自己申请的域名也可以正常访问（注意域名被墙的风险）。
 
-[![部署到Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_BYTEDANCE_APP_ID,TTS_BYTEDANCE_TOKEN,TTS_BYTEDANCE_CLUSTER,TTS_BYTEDANCE_VOICE_TYPE&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
+[![部署到Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server%2Ftree%2Frag&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_BYTEDANCE_APP_ID,TTS_BYTEDANCE_TOKEN,TTS_BYTEDANCE_CLUSTER,TTS_BYTEDANCE_VOICE_TYPE&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
 
 点击上方按钮可以一键将此项目部署到Vercel平台。部署过程中，您需要填写所有必要的环境变量。关于环境变量的详细说明，请参考[.env.example](.env.example)文件。
 
