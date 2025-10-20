@@ -28,7 +28,7 @@ export default function Home() {
         });
         const data = await response.json();
         console.log('Fetched agents:', data);
-        setAgents(data.Data.Agents);
+        setAgents(data.Data.Agents || []);
       } catch (error) {
         console.error('Failed to fetch agents:', error);
       }
