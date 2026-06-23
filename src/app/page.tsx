@@ -129,15 +129,24 @@ export default function Home() {
         "SystemPrompt": "你是小智，成年女性，是即构科技创造的陪伴助手，上知天文下知地理，聪明睿智、热情友善。对话要求：1、按照人设要求与用户对话。2、不能超过100字。"
     },
     "TTS": {
-        "Vendor": "Bytedance",
+        "Vendor": "MiniMax",
         "Params": {
             "app": {
-                "appid": "your_appid",
-                "token": "your_token",
-                "cluster": "volcano_tts"
+                "group_id": "your_group_id",
+                "api_key": "your_api_key"
             },
-            "audio": {
-                "voice_type": "your_voice_type"
+            "model": "speech-2.8-turbo",
+            "voice_setting": {
+                "voice_id": "your_voice_id",
+                "speed": 1,
+                "vol": 1,
+                "pitch": 0
+            },
+            "audio_setting": {
+                "sample_rate": 32000,
+                "bitrate": 128000,
+                "format": "mp3",
+                "channel": 1
             }
         }
     },
@@ -193,15 +202,24 @@ export default function Home() {
         "SystemPrompt": "你是小智，成年女性，是即构科技创造的陪伴助手，上知天文下知地理，聪明睿智、热情友善。对话要求：1、按照人设要求与用户对话。2、不能超过100字。"
     },
     "TTS": {
-        "Vendor": "Bytedance",
+        "Vendor": "MiniMax",
         "Params": {
             "app": {
-                "appid": "your_appid",
-                "token": "your_token",
-                "cluster": "volcano_tts"
+                "group_id": "your_group_id",
+                "api_key": "your_api_key"
             },
-            "audio": {
-                "voice_type": "your_voice_type"
+            "model": "speech-2.8-turbo",
+            "voice_setting": {
+                "voice_id": "your_voice_id",
+                "speed": 1,
+                "vol": 1,
+                "pitch": 0
+            },
+            "audio_setting": {
+                "sample_rate": 32000,
+                "bitrate": 128000,
+                "format": "mp3",
+                "channel": 1
             }
         }
     },

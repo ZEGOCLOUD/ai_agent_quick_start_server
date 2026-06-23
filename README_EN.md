@@ -61,13 +61,19 @@ LLM_MODEL=doubao-1-5-lite-32k-250115
 # Agent system prompt（If not configured, the default prompt word will be used）
 # LLM_SYSTEM_PROMPT="Question answering requirements: You are role-playing. Please follow the character requirements and directly output the answer. The answer is divided into periods. The maximum length of a single answer is 3 sentences and cannot exceed 100 words. \nRole: Li Yueran\nNickname: Teacher Li"
 
-# Taking ByteDance's TTS as an example, during the access test period (within 2 weeks after contacting ZEGOCLOUD technical support to activate the AI Agent service)
-# both the appid and token can be directly filled with "zego_test" to use the TTS (Text-to-Speech) service.
-# The following configurations can be used directly without modification during the access test period:
-TTS_BYTEDANCE_APP_ID=zego_test
-TTS_BYTEDANCE_TOKEN=zego_test
-TTS_BYTEDANCE_CLUSTER=volcano_tts
-TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
+# Recommended unified TTS variables. The default config currently supports MiniMax.
+# For TTS parameter details, refer to: https://www.zegocloud.com/docs/aiagent-server/guides/configuring-tts
+TTS_VENDOR=MiniMax
+TTS_API_KEY=
+TTS_MODEL=speech-2.8-turbo
+TTS_VOICE_ID=
+TTS_GROUP_ID=
+
+# Legacy ByteDance variables are kept only for backward compatibility and are no longer recommended.
+# TTS_BYTEDANCE_APP_ID=
+# TTS_BYTEDANCE_TOKEN=
+# TTS_BYTEDANCE_CLUSTER=
+# TTS_BYTEDANCE_VOICE_TYPE=
 
 # For advanced configuration when creating an agent, including configurable interruption modes, please refer to: https://doc-zh.zego.im/aiagent-server/api-reference/agent-instance-management/create-agent-instance
 # ADVANCED_CONFIG='{"InterruptMode":1}'
@@ -88,7 +94,7 @@ Use this domain to access the API interfaces:
 
 Please note ⚠️: Access to Vercel from Mainland China may be problematic. If you can't access it, please use a VPN. After deployment, binding your own domain to the service can also allow normal access (be aware of the risk of domain blocking).
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_BYTEDANCE_APP_ID,TTS_BYTEDANCE_TOKEN,TTS_BYTEDANCE_CLUSTER,TTS_BYTEDANCE_VOICE_TYPE&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_VENDOR,TTS_API_KEY,TTS_MODEL,TTS_VOICE_ID,TTS_GROUP_ID&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
 
 Click the button above to deploy this project to the Vercel platform with one click. During deployment, you need to fill in all necessary environment variables. For detailed explanations of the environment variables, please refer to the [.env.example](.env.example) file.
 

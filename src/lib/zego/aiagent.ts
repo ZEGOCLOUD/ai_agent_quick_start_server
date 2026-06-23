@@ -250,16 +250,42 @@ export class ZegoAIAgent {
         return result.Data.Agents;
     }
 
-    getDefaultAgentConfig() {
-        return {
-            LLM: {
-                Url: process.env.LLM_BASE_URL || "",
-                ApiKey: process.env.LLM_API_KEY || "",
-                Model: process.env.LLM_MODEL || "",
-                SystemPrompt: process.env.LLM_SYSTEM_PROMPT || SYSTEM_PROMPT
-            },
-            TTS: {
-                Vendor: "ByteDance",
+    private buildTTSConfig(): TTSConfig {
+        const ttsVendor = process.env.TTS_VENDOR || "";
+        const ttsApiKey = process.env.TTS_API_KEY || "";
+        const ttsModel = process.env.TTS_MODEL || "speech-2.8-turbo";
+        const ttsVoiceId = process.env.TTS_VOICE_ID || "";
+        const ttsGroupId = process.env.TTS_GROUP_ID || "";
+
+        if (ttsVendor || ttsApiKey || ttsVoiceId || ttsGroupId || process.env.TTS_MODEL) {
+            if ((ttsVendor || "MiniMax") !== "MiniMax") {
+                throw new Error(`Unsupported TTS_VENDOR: ${(ttsVendor || "MiniMax")}. Only MiniMax is supported by the default config builder.`);
+            }
+
+            return {
+                Vendor: "MiniMax",
+                Params: {
+                    "app": {
+                        "group_id": ttsGroupId,
+                        "api_key": ttsApiKey
+                    },
+                    "model": ttsModel,
+                    "voice_setting": {
+                        "voice_id": ttsVoiceId
+                    },
+                },
+                FilterText: [{ BeginCharacters: "(", EndCharacters: ")" }, { BeginCharacters: "（", EndCharacters: "）" }, { BeginCharacters: "{", EndCharacters: "}" }],
+            };
+        }
+
+        if (
+            process.env.TTS_BYTEDANCE_APP_ID ||
+            process.env.TTS_BYTEDANCE_TOKEN ||
+            process.env.TTS_BYTEDANCE_CLUSTER ||
+            process.env.TTS_BYTEDANCE_VOICE_TYPE
+        ) {
+            return {
+                Vendor: "ByteDanceV3",
                 Params: {
                     "app": {
                         "appid": process.env.TTS_BYTEDANCE_APP_ID || "",
@@ -276,7 +302,43 @@ export class ZegoAIAgent {
                     }
                 },
                 FilterText: [{ BeginCharacters: "(", EndCharacters: ")" }, { BeginCharacters: "（", EndCharacters: "）" }, { BeginCharacters: "{", EndCharacters: "}" }],
+            };
+        }
+
+        return {
+            Vendor: "MiniMax",
+            Params: {
+                "app": {
+                    "group_id": "",
+                    "api_key": ""
+                },
+                "model": ttsModel,
+                "voice_setting": {
+                    "voice_id": "",
+                    "speed": 1,
+                    "vol": 1,
+                    "pitch": 0
+                },
+                "audio_setting": {
+                    "sample_rate": 32000,
+                    "bitrate": 128000,
+                    "format": "mp3",
+                    "channel": 1
+                }
             },
+            FilterText: [{ BeginCharacters: "(", EndCharacters: ")" }, { BeginCharacters: "（", EndCharacters: "）" }, { BeginCharacters: "{", EndCharacters: "}" }],
+        };
+    }
+
+    getDefaultAgentConfig() {
+        return {
+            LLM: {
+                Url: process.env.LLM_BASE_URL || "",
+                ApiKey: process.env.LLM_API_KEY || "",
+                Model: process.env.LLM_MODEL || "",
+                SystemPrompt: process.env.LLM_SYSTEM_PROMPT || SYSTEM_PROMPT
+            },
+            TTS: this.buildTTSConfig(),
             ASR: {
                 Params: {}
             }

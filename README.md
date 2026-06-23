@@ -64,13 +64,19 @@ LLM_MODEL=doubao-1-5-lite-32k-250115
 # 智能体提示词（不配置时会使用默认的提示词）
 # LLM_SYSTEM_PROMPT="回答问题要求：你在做角色扮演，请按照人设要求与用户对话，直接输出回答，回答时以句号为维度，单次回答最长不要超过3句，不能超过100字。\n角色：李悦然\n绰号：李老师"
 
-# 这里以字节跳动的TTS为例，您从字节跳动获取的TTS API Key、Token、Cluster和Voice Type
-# 在接入测试期间（ 联系 ZEGO 技术支持开通 AI Agent 服务 2 周内）appid和token都可以直接填 zego_test 就可使用 tts（文本转语音） 服务。
-# 接入测试期间，以下配置可直接使用，无需修改
-TTS_BYTEDANCE_APP_ID=zego_test
-TTS_BYTEDANCE_TOKEN=zego_test
-TTS_BYTEDANCE_CLUSTER=volcano_tts
-TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
+# 推荐使用统一的 TTS 配置变量。当前默认支持 MiniMax。
+# TTS 详细参数说明请参考：https://doc-zh.zego.im/aiagent-server/guides/configuring-tts
+TTS_VENDOR=MiniMax
+TTS_API_KEY=
+TTS_MODEL=speech-2.8-turbo
+TTS_VOICE_ID=
+TTS_GROUP_ID=
+
+# 旧版字节跳动变量仅用于兼容历史部署，不再推荐新增使用
+# TTS_BYTEDANCE_APP_ID=
+# TTS_BYTEDANCE_TOKEN=
+# TTS_BYTEDANCE_CLUSTER=
+# TTS_BYTEDANCE_VOICE_TYPE=
 
 # 创建智能体时的高级配置，可配置打断模式等，请参考：https://doc-zh.zego.im/aiagent-server/api-reference/agent-instance-management/create-agent-instance
 # ADVANCED_CONFIG='{"InterruptMode":1}'
@@ -91,7 +97,7 @@ TTS_BYTEDANCE_VOICE_TYPE=zh_female_wanwanxiaohe_moon_bigtts
 
 请注意⚠️：中国大陆访问Vercel可能会有问题。如果无法访问请科学上网。在部署好后的服务绑定自己申请的域名也可以正常访问（注意域名被墙的风险）。
 
-[![部署到Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_BYTEDANCE_APP_ID,TTS_BYTEDANCE_TOKEN,TTS_BYTEDANCE_CLUSTER,TTS_BYTEDANCE_VOICE_TYPE&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
+[![部署到Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEGOCLOUD%2Fai_agent_quick_start_server&env=NEXT_PUBLIC_ZEGO_APP_ID,ZEGO_SERVER_SECRET,LLM_API_KEY,LLM_BASE_URL,LLM_MODEL,TTS_VENDOR,TTS_API_KEY,TTS_MODEL,TTS_VOICE_ID,TTS_GROUP_ID&envDescription=这些是启动ZEGO的AI代理服务器所需的环境变量。请查看下方文档获取更多信息。&envLink=https://github.com/zegoim/aiagent-server-quickstart-sample/blob/main/.env.example)
 
 点击上方按钮可以一键将此项目部署到Vercel平台。部署过程中，您需要填写所有必要的环境变量。关于环境变量的详细说明，请参考[.env.example](.env.example)文件。
 
