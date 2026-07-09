@@ -374,6 +374,56 @@ export default function Home() {
             </div>
             <div className="collapse collapse-arrow bg-base-100 border border-base-300">
               <input type="radio" name="my-accordion-2" />
+              <div className="collapse-title font-semibold">创建播报数字人智能体实例（CreateLiveDigitalHumanAgentInstance）</div>
+              <div className="collapse-content text-sm">
+                <div role="alert" className="alert alert-warning alert-soft">
+                  <span>RTC 参数无需填写 UserStreamId；RTC 和 CDN 二选一，同时传入时优先生效 CDN。</span>
+                </div>
+                <div role="alert" className="alert alert-warning alert-soft">
+                  <span>RTC does not need UserStreamId. Provide RTC or CDN; CDN takes priority when both are provided.</span>
+                </div>
+                <button className="btn btn-sm" onClick={async () => {
+                  const textarea = document.querySelector('#create-live-digital-human-agent-instance-textarea') as HTMLTextAreaElement;
+                  if (!textarea) return;
+                  try {
+                    const response = await fetch('/api/passthrough-request', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        action: 'CreateLiveDigitalHumanAgentInstance',
+                        data: JSON.parse(textarea.value)
+                      }),
+                    });
+                    const result = await response.json();
+                    alert(`请求结果：${JSON.stringify(result)}`);
+                  } catch (error) {
+                    alert('请求失败：' + (error as Error).message);
+                  }
+                }}>点我发起请求（Send Request）</button>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">请求参数（Request Parameters）</legend>
+                  <textarea id="create-live-digital-human-agent-instance-textarea" className="textarea w-full h-[300px]" placeholder="请根据您地实际内容填写" defaultValue={`
+{
+    "AgentId": "test-agent-123",
+    "DigitalHuman": {
+        "DigitalHumanId": "digital_human_1",
+        "ConfigId": "web"
+    },
+    "RTC": {
+        "RoomId": "room_1",
+        "AgentStreamId": "agent_stream_1",
+        "AgentUserId": "agent_user_1"
+    }
+}
+
+                  `}></textarea>
+                </fieldset>
+              </div>
+            </div>
+            <div className="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="radio" name="my-accordion-2" />
               <div className="collapse-title font-semibold">修改智能体实例（UpdateAgentInstance）</div>
               <div className="collapse-content text-sm">
                 <div role="alert" className="alert alert-warning alert-soft">

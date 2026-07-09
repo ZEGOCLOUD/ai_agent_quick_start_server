@@ -35,7 +35,8 @@ npm run dev
 1. 获取 Token：`http://localhost:3000/api/zego-token`
 2. 开始与智能体通话： `http://localhost:3000/api/start`
 3. 开始与数字人智能体视频通话：`http://localhost:3000/api/start-digital-human`
-3. 结束与智能体通话： `http://localhost:3000/api/stop`
+4. 开始与播报数字人智能体通话：`http://localhost:3000/api/start-live-digital-human`
+5. 结束与智能体通话： `http://localhost:3000/api/stop`
 
 注意：如果是在 PC/Mac 上运行服务端然后在 Android 或者 iOS 等移动设备上调试，请把 `localhost` 替换成 PC/Mac 的实际局域网地址进行访问。
 
@@ -133,6 +134,10 @@ src
 │   │   │   └── route.ts        # 透传请求处理
 │   │   ├── start
 │   │   │   └── route.ts        # 启动 AI Agent 实例
+│   │   ├── start-digital-human
+│   │   │   └── route.ts        # 启动数字人 AI Agent 实例
+│   │   ├── start-live-digital-human
+│   │   │   └── route.ts        # 启动播报数字人 AI Agent 实例
 │   │   ├── stop
 │   │   │   └── route.ts        # 停止 AI Agent 实例
 │   │   └── zego-token

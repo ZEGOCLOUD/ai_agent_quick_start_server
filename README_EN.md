@@ -32,6 +32,7 @@ Once running successfully, you can call the following interfaces:
 - Get ZEGO Token: `http://localhost:3000/api/zego-token`
 - Start talking with AI Agent: `http://localhost:3000/api/start`
 - Start a video call with the digital human agent: `http://localhost:3000/api/start-digital-human`
+- Start a live digital human agent: `http://localhost:3000/api/start-live-digital-human`
 - Stop talk with AI Agent: `http://localhost:3000/api/stop`
 
 Note: If you are running the server on a PC/Mac and debugging on mobile devices like Android or iOS, please replace `localhost` with the actual LAN address of your PC/Mac.
@@ -130,6 +131,10 @@ src
 │   │   │   └── route.ts        # Passthrough request handling
 │   │   ├── start
 │   │   │   └── route.ts        # Start AI Agent instance
+│   │   ├── start-digital-human
+│   │   │   └── route.ts        # Start digital human AI Agent instance
+│   │   ├── start-live-digital-human
+│   │   │   └── route.ts        # Start live digital human AI Agent instance
 │   │   ├── stop
 │   │   │   └── route.ts        # Stop AI Agent instance
 │   │   └── zego-token

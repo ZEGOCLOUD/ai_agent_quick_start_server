@@ -54,6 +54,16 @@ export interface RtcInfo {
     UserStreamId: string;
 }
 
+export interface LiveDigitalHumanRtcInfo {
+    RoomId: string;
+    AgentStreamId: string;
+    AgentUserId: string;
+}
+
+export interface CdnInfo {
+    Url: string;
+}
+
 interface ZegoConfig {
     appId: number;
     serverSecret: string;
@@ -462,6 +472,35 @@ export class ZegoAIAgent {
         };
         const result = await this.sendRequest<any>(action, body);
         console.log("create digital human agent instance result", result);
+        return result;
+    }
+
+    async createLiveDigitalHumanAgentInstance(
+        agentId: string,
+        digitalHumanInfo: DigitalHumanInfo,
+        rtcInfo: LiveDigitalHumanRtcInfo | null = null,
+        cdnInfo: CdnInfo | null = null,
+        ttsConfig: TTSConfig | null = null,
+        callbackConfig: CallbackConfig | null = null,
+        advancedConfig: AdvancedConfig | null = null,
+        extensionParams: any = null
+    ) {
+        // https://aigc-aiagent-api.zegotech.cn?Action=CreateLiveDigitalHumanAgentInstance
+        const action = 'CreateLiveDigitalHumanAgentInstance';
+        const body: any = {
+            AgentId: agentId,
+            DigitalHuman: digitalHumanInfo,
+        };
+
+        if (rtcInfo) body.RTC = rtcInfo;
+        if (cdnInfo) body.CDN = cdnInfo;
+        if (ttsConfig) body.TTS = ttsConfig;
+        if (callbackConfig) body.CallbackConfig = callbackConfig;
+        if (advancedConfig) body.AdvancedConfig = advancedConfig;
+        if (extensionParams) body.ExtensionParams = extensionParams;
+
+        const result = await this.sendRequest<any>(action, body);
+        console.log("create live digital human agent instance result", result);
         return result;
     }
 
