@@ -33,6 +33,7 @@ Once running successfully, you can call the following interfaces:
 - Start talking with AI Agent: `http://localhost:3000/api/start`
 - Start a video call with the digital human agent: `http://localhost:3000/api/start-digital-human`
 - Start a live digital human agent: `http://localhost:3000/api/start-live-digital-human`
+- Send custom TTS: `http://localhost:3000/api/send-agent-instance-tts`
 - Stop talk with AI Agent: `http://localhost:3000/api/stop`
 
 Note: If you are running the server on a PC/Mac and debugging on mobile devices like Android or iOS, please replace `localhost` with the actual LAN address of your PC/Mac.
@@ -89,6 +90,9 @@ TTS_GROUP_ID=
 Use this domain to access the API interfaces:
 - Get ZEGO Token: `https://cute-******.netlify.app/api/zego-token`
 - Start talking with AI Agent: `https://cute-******.netlify.app/api/start`
+- Start a video call with the digital human agent: `https://cute-******.netlify.app/api/start-digital-human`
+- Start a live digital human agent: `https://cute-******.netlify.app/api/start-live-digital-human`
+- Send custom TTS: `https://cute-******.netlify.app/api/send-agent-instance-tts`
 - Stop talk with AI Agent: `https://cute-******.netlify.app/api/stop`
 
 ### Deploy to Vercel
@@ -102,10 +106,12 @@ Click the button above to deploy this project to the Vercel platform with one cl
 ![](./images/vercel-server.png)
 
 Use this domain to access the API interfaces:
-- Get ZEGO Token: `https://****.vercel.app/api/api/zego-token`
+- Get ZEGO Token: `https://****.vercel.app/api/zego-token`
 - Start talking with AI Agent: `https://****.vercel.app/api/start`
 - Start a video call with the digital human agent: `https://****.vercel.app/api/start-digital-human`
-- Stop talk with AI Agent: `https://****.vercel.app/api/api/stop`
+- Start a live digital human agent: `https://****.vercel.app/api/start-live-digital-human`
+- Send custom TTS: `https://****.vercel.app/api/send-agent-instance-tts`
+- Stop talk with AI Agent: `https://****.vercel.app/api/stop`
 
 ## Using the Service
 
@@ -135,6 +141,8 @@ src
 │   │   │   └── route.ts        # Start digital human AI Agent instance
 │   │   ├── start-live-digital-human
 │   │   │   └── route.ts        # Start live digital human AI Agent instance
+│   │   ├── send-agent-instance-tts
+│   │   │   └── route.ts        # Send custom TTS
 │   │   ├── stop
 │   │   │   └── route.ts        # Stop AI Agent instance
 │   │   └── zego-token

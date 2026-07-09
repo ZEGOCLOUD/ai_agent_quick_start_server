@@ -136,6 +136,16 @@ export interface AdvancedConfig {
     InterruptMode?: 0 | 1,
 }
 
+export interface SendAgentInstanceTTSRequest {
+    AgentInstanceId: string;
+    Text: string;
+    AddHistory?: boolean;
+    InterruptMode?: 0 | 1;
+    Priority?: "Low" | "Medium" | "High";
+    SamePriorityOption?: "ClearAndInterrupt" | "Enqueue";
+    EnqueueUserSpeech?: boolean;
+}
+
 // 会话消息响应类型
 export interface ConversationMessagesResponse {
     Code: number;
@@ -512,6 +522,14 @@ export class ZegoAIAgent {
         };
         const result = await this.sendRequest<any>(action, body);
         console.log("delete agent instance result", result);
+        return result;
+    }
+
+    async sendAgentInstanceTTS(ttsRequest: SendAgentInstanceTTSRequest) {
+        // https://aigc-aiagent-api.zegotech.cn?Action=SendAgentInstanceTTS
+        const action = 'SendAgentInstanceTTS';
+        const result = await this.sendRequest<any>(action, ttsRequest);
+        console.log("send agent instance tts result", result);
         return result;
     }
 

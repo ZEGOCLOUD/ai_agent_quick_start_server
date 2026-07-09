@@ -5,8 +5,9 @@ import { parseJSON } from "@/lib/json";
 
 // 定义请求体类型
 interface RequestBody {
-  agent_id: string;
-  agent_name: string;
+  user_id: string;
+  room_id: string;
+  user_stream_id: string;
 }
 
 // 这里只是作为最简单的示例。所以以下参数都是固定的。请根据您实际的场景进行动态设置。
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
       await assistant.deleteAgentInstance(existingInstanceId);
       store.setAgentInstanceId("");
     }
-    const body = await req.json();
+    const body: RequestBody = await req.json();
     const user_id = body.user_id;
     const room_id = body.room_id;
     const agent_stream_id = randomId("stream_agent_");

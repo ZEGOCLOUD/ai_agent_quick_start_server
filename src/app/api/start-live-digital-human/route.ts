@@ -4,20 +4,6 @@ import { parseJSON } from "@/lib/json";
 import { AdvancedConfig, CallbackConfig, CONSTANTS, DigitalHumanInfo, TTSConfig, ZegoAIAgent } from "@/lib/zego/aiagent";
 
 interface StartLiveDigitalHumanRequest {
-  AgentId?: string;
-  DigitalHuman?: DigitalHumanInfo;
-  RTC?: {
-    RoomId: string;
-    AgentStreamId: string;
-    AgentUserId: string;
-  };
-  CDN?: {
-    Url: string;
-  };
-  TTS?: TTSConfig;
-  CallbackConfig?: CallbackConfig;
-  AdvancedConfig?: AdvancedConfig;
-  ExtensionParams?: any;
   agent_id?: string;
   digital_human_id?: string;
   config_id?: string;
@@ -28,6 +14,36 @@ interface StartLiveDigitalHumanRequest {
   callback_config?: CallbackConfig;
   advanced_config?: AdvancedConfig;
   extension_params?: any;
+}
+
+interface NativeStartLiveDigitalHumanRequest {
+  AgentId?: string;
+  DigitalHuman?: DigitalHumanInfo;
+  RTC?: LiveDigitalHumanRtcRequest;
+  CDN?: {
+    Url: string;
+  };
+  TTS?: TTSConfig;
+  CallbackConfig?: CallbackConfig;
+  AdvancedConfig?: AdvancedConfig;
+  ExtensionParams?: any;
+}
+
+interface LiveDigitalHumanRtcRequest {
+    RoomId: string;
+    AgentStreamId: string;
+    AgentUserId: string;
+}
+
+interface NormalizedStartLiveDigitalHumanRequest {
+  agentId: string;
+  digitalHumanConfig: DigitalHumanInfo | null;
+  rtcConfig: LiveDigitalHumanRtcRequest | null;
+  cdnConfig: { Url: string } | null;
+  ttsConfig: TTSConfig | null;
+  callbackConfig: CallbackConfig | null;
+  advancedConfig: AdvancedConfig | null;
+  extensionParams: any;
 }
 
 interface LiveDigitalHumanResponse {
@@ -45,13 +61,16 @@ function randomId(prefix: string): string {
   return prefix + Math.random().toString(36).substring(2, 10);
 }
 
-function getDigitalHumanConfig(body: StartLiveDigitalHumanRequest): DigitalHumanInfo | null {
-  if (body.DigitalHuman?.DigitalHumanId && body.DigitalHuman?.ConfigId) {
-    return body.DigitalHuman;
-  }
-
+function getDigitalHumanConfig(
+  body: StartLiveDigitalHumanRequest,
+  nativeBody: NativeStartLiveDigitalHumanRequest
+): DigitalHumanInfo | null {
   if (body.digital_human?.DigitalHumanId && body.digital_human?.ConfigId) {
     return body.digital_human;
+  }
+
+  if (nativeBody.DigitalHuman?.DigitalHumanId && nativeBody.DigitalHuman?.ConfigId) {
+    return nativeBody.DigitalHuman;
   }
 
   if (body.digital_human_id && body.config_id) {
@@ -64,6 +83,32 @@ function getDigitalHumanConfig(body: StartLiveDigitalHumanRequest): DigitalHuman
   return null;
 }
 
+function normalizeRequestBody(rawBody: unknown): NormalizedStartLiveDigitalHumanRequest {
+  const body = rawBody as StartLiveDigitalHumanRequest;
+  const nativeBody = rawBody as NativeStartLiveDigitalHumanRequest;
+  const agentStreamId = randomId("stream_agent_");
+  const agentUserId = randomId("user_agent_");
+
+  const rtcConfig = nativeBody.RTC || (body.room_id
+    ? {
+        RoomId: body.room_id,
+        AgentStreamId: agentStreamId,
+        AgentUserId: agentUserId,
+      }
+    : null);
+
+  return {
+    agentId: body.agent_id || nativeBody.AgentId || CONSTANTS.AGENT_ID,
+    digitalHumanConfig: getDigitalHumanConfig(body, nativeBody),
+    rtcConfig,
+    cdnConfig: nativeBody.CDN || (body.cdn_url ? { Url: body.cdn_url } : null),
+    ttsConfig: body.tts || nativeBody.TTS || null,
+    callbackConfig: body.callback_config || nativeBody.CallbackConfig || null,
+    advancedConfig: body.advanced_config || nativeBody.AdvancedConfig || (process.env.ADVANCED_CONFIG ? parseJSON(process.env.ADVANCED_CONFIG) : null),
+    extensionParams: body.extension_params || nativeBody.ExtensionParams || null,
+  };
+}
+
 function createErrorResponse(code: number, message: string, status = 200): NextResponse {
   const response: LiveDigitalHumanResponse = { code, message };
   return NextResponse.json(response, { status });
@@ -71,8 +116,17 @@ function createErrorResponse(code: number, message: string, status = 200): NextR
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    const body: StartLiveDigitalHumanRequest = await req.json();
-    const digitalHumanConfig = getDigitalHumanConfig(body);
+    const body = await req.json();
+    const {
+      agentId,
+      digitalHumanConfig,
+      rtcConfig,
+      cdnConfig,
+      ttsConfig,
+      callbackConfig,
+      advancedConfig,
+      extensionParams,
+    } = normalizeRequestBody(body);
 
     if (!digitalHumanConfig) {
       return createErrorResponse(
@@ -82,26 +136,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    if (!body.CDN && !body.cdn_url && !body.RTC && !body.room_id) {
+    if (!rtcConfig && !cdnConfig) {
       return createErrorResponse(
         400,
         "请求参数不完整，RTC 和 CDN 配置二选一，请提供 room_id 或 cdn_url",
         400
       );
     }
-
-    const agentId = body.AgentId || body.agent_id || CONSTANTS.AGENT_ID;
-    const agentStreamId = randomId("stream_agent_");
-    const agentUserId = randomId("user_agent_");
-    const rtcConfig = body.RTC || (body.room_id
-      ? {
-          RoomId: body.room_id,
-          AgentStreamId: agentStreamId,
-          AgentUserId: agentUserId,
-        }
-      : null);
-    const cdnConfig = body.CDN || (body.cdn_url ? { Url: body.cdn_url } : null);
-    const advancedConfig = body.AdvancedConfig || body.advanced_config || (process.env.ADVANCED_CONFIG ? parseJSON(process.env.ADVANCED_CONFIG) : null);
 
     const assistant = ZegoAIAgent.getInstance();
     const store = AgentStore.getInstance();
@@ -113,10 +154,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       digitalHumanConfig,
       rtcConfig,
       cdnConfig,
-      body.TTS || body.tts || null,
-      body.CallbackConfig || body.callback_config || null,
+      ttsConfig,
+      callbackConfig,
       advancedConfig,
-      body.ExtensionParams || body.extension_params || null
+      extensionParams
     );
 
     if (result.Code !== 0) {

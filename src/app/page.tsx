@@ -548,18 +548,15 @@ export default function Home() {
               <div className="collapse-title font-semibold">主动调用TTS（SendAgentInstanceTTS）</div>
               <div className="collapse-content text-sm">
                 <button className="btn btn-sm" onClick={async () => {
-                  const textarea = document.querySelector('#sned-instance-tts-textarea') as HTMLTextAreaElement;
+                  const textarea = document.querySelector('#send-instance-tts-textarea') as HTMLTextAreaElement;
                   if (!textarea) return;
                   try {
-                    const response = await fetch('/api/passthrough-request', {
+                    const response = await fetch('/api/send-agent-instance-tts', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
                       },
-                      body: JSON.stringify({
-                        action: 'SendAgentInstanceTTS',
-                        data: JSON.parse(textarea.value)
-                      }),
+                      body: textarea.value,
                     });
                     const result = await response.json();
                     alert(`请求结果：${JSON.stringify(result)}`);
@@ -569,10 +566,10 @@ export default function Home() {
                 }}>点我发起请求（Send Request）</button>
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">请求参数（Request Parameters）</legend>
-                  <textarea id="sned-instance-tts-textarea" className="textarea w-full h-[300px]" placeholder="请根据您地实际内容填写" defaultValue={`
+                  <textarea id="send-instance-tts-textarea" className="textarea w-full h-[300px]" placeholder="请根据您地实际内容填写" defaultValue={`
 {
-    "AgentInstanceId": "1907780504753553408",
-    "Text": "尊敬的开发者你好，欢迎使用 ZEGO RTC 共建实时互动世界。"
+    "agent_instance_id": "1907780504753553408",
+    "text": "尊敬的开发者你好，欢迎使用 ZEGO RTC 共建实时互动世界。"
 }
                   `}></textarea>
                 </fieldset>
