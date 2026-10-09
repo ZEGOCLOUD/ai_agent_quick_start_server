@@ -279,16 +279,14 @@ export class ZegoAIAgent {
         const ttsApiKey = process.env.TTS_API_KEY || "";
         const ttsModel = process.env.TTS_MODEL || "speech-2.8-turbo";
         const ttsVoiceId = process.env.TTS_VOICE_ID || "";
-        const ttsGroupId = process.env.TTS_GROUP_ID || "";
 
         switch (ttsVendor) {
             case "MiniMax": {
-                if (ttsApiKey || ttsVoiceId || ttsGroupId || ttsModel) {
+                if (ttsApiKey || ttsVoiceId || ttsModel) {
                     return {
                         Vendor: ttsVendor,
                         Params: {
                             "app": {
-                                "group_id": ttsGroupId,
                                 "api_key": ttsApiKey
                             },
                             "model": ttsModel,
@@ -336,7 +334,6 @@ export class ZegoAIAgent {
             Vendor: "MiniMax",
             Params: {
                 "app": {
-                    "group_id": "",
                     "api_key": ""
                 },
                 "model": ttsModel,
