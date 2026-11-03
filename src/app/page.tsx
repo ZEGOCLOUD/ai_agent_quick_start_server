@@ -458,9 +458,9 @@ export default function Home() {
 {
     "AgentInstanceId": "1912124734317838336",
     "LLM": {
-        "Url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+        "Url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
         "ApiKey": "your_api_key",
-        "Model": "abab6.5s-chat",
+        "Model": "doubao-seed-2-1-turbo-260628",
         "SystemPrompt": "你是小智，成年女性，是即构科技创造的陪伴助手，上知天文下知地理，聪明睿智、热情友善。对话要求：1、按照人设要求与用户对话。2、不能超过100字。"
     }
 }

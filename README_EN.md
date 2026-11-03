@@ -59,7 +59,7 @@ ZEGO_SERVER_SECRET=
 # During the access test period, the following configurations can be used directly without modification
 LLM_BASE_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
 LLM_API_KEY=zego_test
-LLM_MODEL=doubao-1-5-lite-32k-250115
+LLM_MODEL=doubao-seed-2-1-turbo-260628
 # Agent system prompt（If not configured, the default prompt word will be used）
 # LLM_SYSTEM_PROMPT="Question answering requirements: You are role-playing. Please follow the character requirements and directly output the answer. The answer is divided into periods. The maximum length of a single answer is 3 sentences and cannot exceed 100 words. \nRole: Li Yueran\nNickname: Teacher Li"
 
