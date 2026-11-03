@@ -62,7 +62,7 @@ ZEGO_SERVER_SECRET=
 # 接入测试期间，以下配置可直接使用，无需修改
 LLM_BASE_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
 LLM_API_KEY=zego_test
-LLM_MODEL=doubao-1-5-lite-32k-250115
+LLM_MODEL=doubao-seed-2-1-turbo-260628
 # 智能体提示词（不配置时会使用默认的提示词）
 # LLM_SYSTEM_PROMPT="回答问题要求：你在做角色扮演，请按照人设要求与用户对话，直接输出回答，回答时以句号为维度，单次回答最长不要超过3句，不能超过100字。\n角色：李悦然\n绰号：李老师"
 
